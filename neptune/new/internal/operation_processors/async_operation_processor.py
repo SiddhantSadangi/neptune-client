@@ -161,9 +161,7 @@ class AsyncOperationProcessor(OperationProcessor):
                 return
 
             if not self._consumer.is_running():
-                click.echo(
-                    f"Synchronization job is not running, unable to synchronize.", sys.stderr
-                )
+                click.echo("Synchronization job is not running, unable to synchronize.", sys.stderr)
                 return
 
             click.echo(
