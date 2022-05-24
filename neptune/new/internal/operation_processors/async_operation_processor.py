@@ -84,6 +84,8 @@ class AsyncOperationProcessor(OperationProcessor):
             self.wait()
 
     def wait(self):
+        if not self._consumer.is_running():
+            raise Exception("Synchronization job is not running, unable to synchronize")
         self.flush()
         waiting_for_version = self._last_version
         self._consumer.wake_up()
@@ -155,6 +157,12 @@ class AsyncOperationProcessor(OperationProcessor):
                     f" You have {size_remaining} operations saved on disk that can be manually synced"
                     f" using `neptune sync` command.",
                     sys.stderr,
+                )
+                return
+
+            if not self._consumer.is_running():
+                click.echo(
+                    f"Synchronization job is not running, unable to synchronize.", sys.stderr
                 )
                 return
 
